@@ -41,6 +41,10 @@
     "babel",
     "education"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeschoolinabox/sl-trace-js-klve"
+  },
   "author": "Evan Cole",
   "dependencies": {
     "@babel/standalone": "^7.26.0",
