@@ -1,6 +1,6 @@
 {
   "name": "@study-lenses/trace-js-klve",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JavaScript execution tracer for @study-lenses — traces JS code via Babel instrumentation",
   "type": "module",
   "exports": {
