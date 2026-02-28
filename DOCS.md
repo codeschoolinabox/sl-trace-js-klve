@@ -1,19 +1,35 @@
 # @study-lenses/CHANGEME — Architecture & Decisions
 
-## Why this package exists
+## Why this tracer exists
 
-TODO: one paragraph — what problem does this package solve and why does it exist as a
-separate package rather than inline code?
+CHANGEME: what language/runtime does this instrument, and why as a separate package?
 
 ## Architecture
 
-TODO: describe the internal pipeline or data flow. Diagrams welcome.
+This package implements the `TracerModule` contract from `@study-lenses/tracing`:
+
+```text
+code (string)
+  → record/index.ts    ← engine adapter (owned here)
+  → record/<engine>    ← tracer engine (CHANGEME: owned here or external)
+  → TracerStep[]       ← returned via @study-lenses/tracing wrappers
+```
+
+`src/index.ts` is wire-up only — no logic. All tracer logic lives in `record/`.
 
 ## Key decisions
 
-TODO: explain the non-obvious choices made in this package — what was considered and why
-the current approach was chosen over alternatives.
+### Why options are JSON Schema + verifyOptions
+
+JSON Schema (draft-07) validates structure and types. `verify-options/` handles
+constraints the schema cannot express (cross-field rules). Separating them keeps
+the schema machine-readable for tooling while still enforcing semantic rules.
+
+### CHANGEME: add other decisions
+
+TODO: what non-obvious choices did you make in the engine or options design?
 
 ## What this package deliberately does NOT do
 
-TODO: scope boundaries. What did you intentionally leave out, and why?
+This package instruments and executes code — it does not interpret, display, or
+pedagogically frame the resulting trace. That is the consumer's responsibility.

@@ -1,13 +1,19 @@
 # src/
 
-TODO: one paragraph — what does this package's source do?
+Source for a `@study-lenses` tracer package. Implements the `TracerModule` contract
+from `@study-lenses/tracing` — instrument + execute code, return steps.
 
 ## Structure
 
-| Module   | Purpose                                                         |
-| -------- | --------------------------------------------------------------- |
-| `utils/` | Pure utility functions (deep-clone, deep-freeze, deep-merge, …) |
-| TODO     | CHANGEME                                                        |
+| Module | Purpose |
+| --- | --- |
+| `id.ts` | Unique tracer identifier (`'lang:engine'`) |
+| `langs.ts` | File extensions this tracer handles |
+| `options.schema.json` | JSON Schema for tracer options |
+| `options-schema.ts` | Re-export wrapper for `options.schema.json` |
+| `record/` | Instrumentation engine + RecordFunction adapter |
+| `verify-options/` | Semantic validation (cross-field constraints) |
+| `utils/` | Shared pure utilities (deep-clone, freeze, merge) |
 
 ## Conventions
 

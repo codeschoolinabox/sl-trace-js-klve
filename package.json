@@ -31,6 +31,9 @@
     "LICENSE",
     "package.json"
   ],
+  "dependencies": {
+    "@study-lenses/tracing": "^0.1.1"
+  },
   "engines": {
     "node": ">=22.0.0"
   },
