@@ -15,6 +15,11 @@ export default tseslint.config(
       'node_modules/',
       '**/*.d.ts',
       'docs/', // TypeDoc-generated, not linted
+      // Pre-existing tracer internals from external developer — not owned by this package
+      'src/record/trace.ts',
+      'src/record/filter-steps.ts',
+      'src/record/ast-map.ts',
+      'src/record/types.ts',
     ],
   },
 
@@ -49,23 +54,28 @@ export default tseslint.config(
         },
       },
       // --- Module boundaries ---
-      // utils is listed first — src/utils/** matches 'utils' before the broader 'src' catch-all
+      // Strict DAG: entry → record/verify/core/utils, record/verify → core/utils, core → utils, utils → utils
+      // record and verify may each be a single file OR expanded to a folder — both patterns covered.
       'boundaries/ignore': ['**/tests/**/*.ts'],
       'boundaries/elements': [
-        { type: 'utils', pattern: 'src/utils/**', mode: 'file' },
-        { type: 'src', pattern: 'src/**', mode: 'file' },
+        { type: 'entry',  pattern: 'src/index.ts',                                                              mode: 'file' },
+        { type: 'record', pattern: ['src/record.ts', 'src/record/**'],                                          mode: 'file' },
+        { type: 'verify', pattern: ['src/verify-options.ts', 'src/verify-options/**'],                          mode: 'file' },
+        { type: 'core',   pattern: ['src/id.ts', 'src/langs.ts', 'src/types.ts', 'src/options-schema.ts', 'src/*.schema.json'], mode: 'file' },
+        { type: 'utils',  pattern: 'src/utils/**',                                                              mode: 'file' },
       ],
     },
     rules: {
-      // --- Module boundaries ---
-      // utils → utils only; src → src + utils. Expand both elements and rules per package.
       'boundaries/element-types': [
         'error',
         {
           default: 'disallow',
           rules: [
-            { from: 'src', allow: ['src', 'utils'] },
-            { from: 'utils', allow: ['utils'] },
+            { from: 'entry',  allow: ['record', 'verify', 'core', 'utils'] },
+            { from: 'record', allow: ['record', 'core', 'utils'] },
+            { from: 'verify', allow: ['verify', 'core', 'utils'] },
+            { from: 'core',   allow: ['core', 'utils'] },
+            { from: 'utils',  allow: ['utils'] },
           ],
         },
       ],
@@ -73,7 +83,7 @@ export default tseslint.config(
       'boundaries/no-unknown-files': ['error'],
 
       // --- TypeScript ---
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       // `any` types: Warn during development, review in PR

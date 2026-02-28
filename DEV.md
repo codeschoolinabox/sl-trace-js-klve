@@ -680,26 +680,20 @@ for all files and directories. Match filename to export: `createConfig` → `cre
 
 ### Directory Documentation Convention
 
-Every source directory under `src/` has a `README.md`. Directories with non-obvious
-architecture or key design decisions also have a `DOCS.md`:
+Every source directory under `src/` has a `README.md`:
 
-| Content                                              | Where                        | Audience     |
-| ---------------------------------------------------- | ---------------------------- | ------------ |
-| API reference (signatures, params, returns, throws)  | JSDoc/TSDoc → `docs/`        | Consumers    |
-| Consumer-facing "why" context                        | TSDoc `@remarks` → `docs/`   | Consumers    |
-| What this module does, how to navigate it            | `README.md` per directory    | Contributors |
-| Architecture, design decisions, why this approach    | `DOCS.md` per directory      | Developers   |
-| Non-obvious implementation detail                    | Inline `//` comment          | Code readers |
+| Content                                 | Where               | Audience     |
+| --------------------------------------- | ------------------- | ------------ |
+| What this directory does, why it exists | `README.md`         | Contributors |
+| Key files and their responsibilities    | `README.md`         | Contributors |
+| API reference (auto-generated)          | `docs/` via TypeDoc | Consumers    |
 
 **Rules:**
 
 - Every directory has a `README.md` (brief — 5–15 lines is typical)
-- Directories with non-obvious architecture or key design decisions also have a `DOCS.md`
-- `DOCS.md` captures the "why" — tradeoffs, alternatives considered, constraints. Keep it short.
-  It is NOT an API reference — JSDoc handles that. Hand-maintained: fix it or delete it if it goes stale.
+- No `DOCS.md` files anywhere — they go stale. Use JSDoc/TSDoc in source; TypeDoc generates `docs/`
 - Tests directories (`tests/`) are exempt from needing `README.md`
 - `README.md` is cross-referenced: parent links down, child links up, siblings link to each other
-- Public functions have JSDoc/TSDoc in source; TypeDoc generates `docs/` (gitignored, CI-only)
 
 **Public function documentation:**
 

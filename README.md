@@ -1,57 +1,86 @@
-# @study-lenses/CHANGEME
+# @study-lenses/trace-js-klve
 
-[![npm version](https://img.shields.io/npm/v/@study-lenses/CHANGEME.svg)](https://www.npmjs.com/package/@study-lenses/CHANGEME)
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@study-lenses/trace-js-klve.svg)](https://www.npmjs.com/package/@study-lenses/trace-js-klve)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-> TODO: One sentence — what language/runtime does this tracer instrument?
+> JavaScript execution tracer for `@study-lenses/tracing` — instruments JS/MJS/CJS code
+> via Babel and returns step-by-step execution traces.
 
-A `@study-lenses` tracer package. Instruments and executes source code,
-returning a step-by-step execution trace for educational tooling.
+## Pedagogical Purpose
+
+**Neutral infrastructure:** This package provides raw JavaScript execution traces for
+educational tool developers. It makes no pedagogical decisions — those belong in the
+tools that consume it.
+
+The trace data is deliberately granular: every expression evaluation, variable read,
+function call, and control-flow step is captured. Educational tools decide which
+subset to show and how to present it.
+
+## Who Is This For
+
+**Primary — Educational tool developers:** Building Study Lenses, custom analysis tools,
+or other learning environments that need JS execution traces.
+
+**Secondary — CS instructors:** Using this package directly to build course-specific
+debugging aids or step-through visualizations.
 
 ## Install
 
 ```bash
-npm install @study-lenses/CHANGEME
+npm install @study-lenses/trace-js-klve
 ```
 
 ## Quick Start
 
 ```typescript
-import trace from '@study-lenses/CHANGEME';
+import trace from '@study-lenses/trace-js-klve';
 
-// CHANGEME: replace with a real example for your language
-const steps = await trace('let x = 1 + 2;');
+const steps = await trace('let x = 1 + 2; console.log(x);');
 console.log(steps);
+// → [{ step: 1, category: 'expression', type: 'BinaryExpression', ... }, ...]
 ```
 
-## Tracer Contract
+## API Summary
 
-This package implements the `@study-lenses/tracing` tracer interface:
+`@study-lenses/trace-js-klve` pre-configures all four `@study-lenses/tracing` wrappers
+with the js-klve tracer:
 
-| Export                  | Description                                        |
-| ----------------------- | -------------------------------------------------- |
-| `trace(code, config?)`  | Instrument and execute code, return steps          |
-| `tracify(config)`       | Pre-bind config, return a `trace` function         |
-| `embody(code, config?)` | Instrument and execute, return embodied result     |
-| `embodify(config)`      | Pre-bind config, return an `embody` function       |
-| `tracer`                | The raw `TracerModule` (for introspection)         |
+| Export | Description |
+|--------|-------------|
+| `trace(code, config?)` | Positional args, throws on error. Default export. |
+| `tracify` | Chainable builder with tracer pre-set, throws on error. |
+| `embody({ code, config? })` | Keyed args, returns Result (no throw). |
+| `embodify({ code?, config? })` | Immutable chainable builder, returns Result. |
 
-## What to Implement
+See [DOCS.md](./DOCS.md) for the full API reference and filter options.
 
-Fork this repo, then fill in:
+## Design Principles
 
-1. `src/id.ts` — unique tracer ID (format: `'lang:engine'`)
-2. `src/langs.ts` — file extensions this tracer handles
-3. `src/options.schema.json` — options this tracer accepts
-4. `src/record/` — the actual instrumentation + execution engine
-5. `src/verify-options/` — semantic option constraints (if any)
+### What this package provides
+
+- Step-by-step execution traces for JS/MJS/CJS code
+- Babel-based instrumentation (AST-level, no runtime monkey-patching)
+- Configurable post-trace filtering (by node type, name, timing, data fields)
+- The four standard `@study-lenses/tracing` wrappers, pre-bound to this tracer
+
+### What this package does NOT do
+
+- Make pedagogical decisions (what to show, how to explain)
+- Persist or accumulate traces across calls
+- Support languages other than JS/MJS/CJS
 
 ## Architecture
 
-TODO: brief description of the tracer engine and how it instruments code.
+```
+code → Babel instrumentation → execution → raw steps → filter → JsKlveStep[]
+```
 
-See [DEV.md](./DEV.md) for full conventions and TDD workflow.
+The tracer internals (`record/tracer.ts`, `record/filter-steps.ts`, etc.) are
+pre-existing code by Kelley van Evert ([jsviz.klve.nl](https://jsviz.klve.nl)),
+wrapped by `record/index.ts` which adapts the output to the `@study-lenses/tracing`
+`RecordFunction` contract.
+
+See [DEV.md](./DEV.md) for full architecture, conventions, and the TDD workflow.
 
 ## Contributing
 
@@ -59,4 +88,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) and [DEV.md](./DEV.md).
 
 ## License
 
-MIT © [YEAR] [NAME]
+MIT © 2025 Evan Cole

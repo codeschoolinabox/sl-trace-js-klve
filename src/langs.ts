@@ -1,7 +1,8 @@
 /**
- * @file Supported file extensions for this tracer (without leading dot).
+ * @file Supported file extensions for the js-klve tracer.
  *
- * Frozen in index.ts alongside other static data.
+ * The tracer accepts `.js`, `.mjs`, and `.cjs` files.
+ * Frozen in `index.ts` alongside other static data.
  */
 
-export default ['CHANGEME'];
+export default ['js', 'mjs', 'cjs'];

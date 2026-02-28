@@ -1,7 +1,176 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "js-klve-options",
+  "title": "js-klve Options",
+  "description": "Configuration options for js-klve JavaScript tracer",
   "type": "object",
-  "description": "CHANGEME: options accepted by this tracer.",
-  "properties": {},
+  "properties": {
+    "declarations": {
+      "type": "object",
+      "description": "Filter by declaration AST node types",
+      "properties": {
+        "variable": { "type": "boolean", "default": true, "description": "VariableDeclaration" }
+      },
+      "additionalProperties": false
+    },
+    "loops": {
+      "type": "object",
+      "description": "Filter by loop AST node types",
+      "properties": {
+        "for": { "type": "boolean", "default": true, "description": "ForStatement" },
+        "while": { "type": "boolean", "default": true, "description": "WhileStatement" }
+      },
+      "additionalProperties": false
+    },
+    "conditionals": {
+      "type": "object",
+      "description": "Filter by conditional AST node types",
+      "properties": {
+        "if": { "type": "boolean", "default": true, "description": "IfStatement" },
+        "ternary": { "type": "boolean", "default": true, "description": "ConditionalExpression" }
+      },
+      "additionalProperties": false
+    },
+    "blocks": {
+      "type": "object",
+      "description": "Filter by block/statement AST node types",
+      "properties": {
+        "try": { "type": "boolean", "default": true, "description": "TryStatement" },
+        "expressionStatement": {
+          "type": "boolean",
+          "default": true,
+          "description": "ExpressionStatement"
+        }
+      },
+      "additionalProperties": false
+    },
+    "calls": {
+      "type": "object",
+      "description": "Filter by call AST node types",
+      "properties": {
+        "call": { "type": "boolean", "default": true, "description": "CallExpression" },
+        "new": { "type": "boolean", "default": true, "description": "NewExpression" }
+      },
+      "additionalProperties": false
+    },
+    "access": {
+      "type": "object",
+      "description": "Filter by access AST node types",
+      "properties": {
+        "member": { "type": "boolean", "default": true, "description": "MemberExpression" },
+        "identifier": { "type": "boolean", "default": true, "description": "Identifier" }
+      },
+      "additionalProperties": false
+    },
+    "operators": {
+      "type": "object",
+      "description": "Filter by operator AST node types",
+      "properties": {
+        "binary": { "type": "boolean", "default": true, "description": "BinaryExpression" },
+        "unary": { "type": "boolean", "default": true, "description": "UnaryExpression" },
+        "logical": { "type": "boolean", "default": true, "description": "LogicalExpression" },
+        "assignment": { "type": "boolean", "default": true, "description": "AssignmentExpression" },
+        "update": { "type": "boolean", "default": true, "description": "UpdateExpression" },
+        "sequence": { "type": "boolean", "default": true, "description": "SequenceExpression" }
+      },
+      "additionalProperties": false
+    },
+    "literals": {
+      "type": "object",
+      "description": "Filter by literal AST node types",
+      "properties": {
+        "numeric": { "type": "boolean", "default": true, "description": "NumericLiteral" },
+        "string": { "type": "boolean", "default": true, "description": "StringLiteral" },
+        "boolean": { "type": "boolean", "default": true, "description": "BooleanLiteral" },
+        "array": { "type": "boolean", "default": true, "description": "ArrayExpression" },
+        "object": { "type": "boolean", "default": true, "description": "ObjectExpression" }
+      },
+      "additionalProperties": false
+    },
+    "functions": {
+      "type": "object",
+      "description": "Filter by function AST node types",
+      "properties": {
+        "arrow": {
+          "type": "boolean",
+          "default": true,
+          "description": "ArrowFunctionExpression"
+        },
+        "expression": {
+          "type": "boolean",
+          "default": true,
+          "description": "FunctionExpression"
+        }
+      },
+      "additionalProperties": false
+    },
+    "filter": {
+      "type": "object",
+      "description": "Post-trace output filtering",
+      "properties": {
+        "names": {
+          "type": "object",
+          "description": "Filter steps by variable/function/property names in step detail",
+          "properties": {
+            "include": {
+              "type": "array",
+              "items": { "type": "string" },
+              "uniqueItems": true,
+              "description": "Whitelist: only keep steps mentioning these names (+ nameless structural steps)"
+            },
+            "exclude": {
+              "type": "array",
+              "items": { "type": "string" },
+              "uniqueItems": true,
+              "description": "Blacklist: remove steps mentioning these names"
+            }
+          },
+          "additionalProperties": false
+        },
+        "timing": {
+          "type": "object",
+          "description": "Filter by step timing phase",
+          "properties": {
+            "before": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include 'before' steps"
+            },
+            "after": { "type": "boolean", "default": true, "description": "Include 'after' steps" }
+          },
+          "additionalProperties": false
+        },
+        "data": {
+          "type": "object",
+          "description": "Control which data fields are included in steps",
+          "properties": {
+            "scopes": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include variable scope chain"
+            },
+            "value": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include expression values"
+            },
+            "logs": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include console.log captures"
+            },
+            "dt": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include timing (ms since start)"
+            },
+            "loc": { "type": "boolean", "default": true, "description": "Include source location" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "additionalProperties": false
 }

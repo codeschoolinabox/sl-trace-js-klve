@@ -1,5 +1,5 @@
 /**
- * @file Package entry point.
+ * @file Package entry point for @study-lenses/trace-js-klve.
  *
  * Assembles the TracerModule from static data and the record function,
  * wires it into @study-lenses/tracing, and re-exports the resulting
@@ -16,6 +16,13 @@ import record from './record/index.js';
 import deepFreeze from './utils/deep-freeze.js';
 import verifyOptions from './verify-options/index.js';
 
+/**
+ * The raw TracerModule wired into @study-lenses/tracing.
+ *
+ * Exposed for introspection (e.g. `tracer.id`, `tracer.langs`) or for use in
+ * custom wrappers. Most consumers use the pre-bound wrappers (`trace`, `embody`,
+ * etc.) rather than calling `record()` directly.
+ */
 const tracer = Object.freeze({
   id,
   langs: Object.freeze(langs),
@@ -27,5 +34,7 @@ const tracer = Object.freeze({
 const { trace, tracify, embody, embodify } = tracing(tracer);
 
 export { trace, tracify, embody, embodify };
+
 export { tracer };
+
 export default trace;

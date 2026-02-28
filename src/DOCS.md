@@ -19,5 +19,3 @@ centralising the `with { type: 'json' }` attribute and any casting needed.
 
 Importing directly from source files keeps the dependency graph explicit and prevents
 accidental coupling. The `boundaries` plugin enforces this.
-
-## CHANGEME: add other architecture notes

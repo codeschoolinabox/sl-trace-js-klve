@@ -1,15 +1,10 @@
 /**
  * @file Local types for verify-options.
- *
- * CHANGEME: add minimal types for the fields being validated.
- * Keep these local — avoid importing from record/ across module boundaries.
+ * Keep these local — avoids cross-boundary import from record/.
  */
 
-// Example:
-// export type NameFilter = {
-//   readonly include?: readonly string[];
-//   readonly exclude?: readonly string[];
-// };
-
-/** CHANGEME: replace with the actual options shape your tracer accepts. */
-export type VerifyOptionsInput = Record<string, unknown>;
+/** Fields validated by the mutual-exclusion constraint. */
+export type NameFilter = {
+  readonly include?: readonly string[];
+  readonly exclude?: readonly string[];
+};

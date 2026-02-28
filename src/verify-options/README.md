@@ -2,11 +2,11 @@
 
 Semantic validation called by the API layer after JSON Schema validation and default-filling.
 
-Use this for constraints JSON Schema cannot express (e.g. mutually exclusive fields).
-Leave `index.ts` as a no-op if the JSON Schema is sufficient.
+Enforces constraints JSON Schema cannot express — currently: `filter.names.include` and
+`filter.names.exclude` are mutually exclusive.
 
 ## Files
 
 - `index.ts` — `verifyOptions(options)` — throws `OptionsSemanticInvalidError` on violations
-- `types.ts` — local types used for validation (avoids cross-boundary imports)
+- `types.ts` — `NameFilter` type (local, avoids cross-boundary import from `record/`)
 - `tests/` — unit tests for semantic validation
