@@ -6,4 +6,4 @@
  * Deep-freezing is done in `index.ts` alongside `langs` and other static data.
  */
 
-export { default } from './options.schema.json';
+export { default } from './options.schema.json' with { type: 'json' };

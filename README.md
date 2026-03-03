@@ -75,6 +75,42 @@ See [DOCS.md](./DOCS.md) for the full API reference and filter options.
 code → Babel instrumentation → execution → raw steps → filter → JsKlveStep[]
 ```
 
+### Where Your Tracer Plugs In
+
+The ★ items are what you implement. Everything else is handled by the `@study-lenses/tracing` wrapper — config validation, freezing, steps conformity checks, and error handling.
+
+```mermaid
+flowchart TB
+    consumer1["<b>CONSUMER PROGRAM</b><br/>(educational tool)<br/><br/>calls trace(tracer, code, config?)"]
+
+    consumer1 -- "code + config" --> validation
+
+    subgraph wrapper ["@study-lenses/tracing — API WRAPPER"]
+        direction TB
+        validation["<b>VALIDATE CONFIG</b> · sync<br/>expand shorthand, fill defaults,<br/>schema + semantic validation"]
+        execution["<b>EXECUTE TRACER</b> · async<br/>call record() with code +<br/>fully resolved frozen config"]
+        postprocessing["<b>VALIDATE + FREEZE STEPS</b> · sync<br/>check StepCore conformity,<br/>deep-freeze for consumer"]
+
+        validation --> execution --> postprocessing
+    end
+
+    postprocessing -- "frozen steps" --> consumer2
+    consumer2["<b>CONSUMER PROGRAM</b><br/>(receives frozen steps)"]
+
+    subgraph tracermod ["YOUR TRACER MODULE  ★ = you implement this"]
+        direction TB
+        fields["<b>★ id</b> · unique identifier<br/><b>★ langs</b> · supported extensions<br/><b>★ optionsSchema</b> · JSON Schema (optional)<br/><b>★ verifyOptions</b> · semantic checks (optional)<br/><b>★ record</b> · instruments + executes code"]
+    end
+
+    tracermod -. "schema + verify" .-> validation
+    tracermod -. "record()" .-> execution
+
+    style wrapper fill:none,stroke:#333,stroke-width:3px
+    style tracermod fill:#fff8e1,stroke:#f9a825,stroke-width:2px
+    style consumer1 fill:#e3f2fd,stroke:#1565c0
+    style consumer2 fill:#e3f2fd,stroke:#1565c0
+```
+
 The tracer internals (`record/tracer.ts`, `record/filter-steps.ts`, etc.) are
 pre-existing code by Kelley van Evert ([jsviz.klve.nl](https://jsviz.klve.nl)),
 wrapped by `record/index.ts` which adapts the output to the `@study-lenses/tracing`
