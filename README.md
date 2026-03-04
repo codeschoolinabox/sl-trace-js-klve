@@ -48,8 +48,8 @@ with the js-klve tracer:
 | Export | Description |
 |--------|-------------|
 | `trace(code, config?)` | Positional args, throws on error. Default export. |
-| `tracify` | Chainable builder with tracer pre-set, throws on error. |
-| `embody({ code, config? })` | Keyed args, returns Result (no throw). |
+| `tracify({ code, config? })` | Keyed args, returns Result (no throw). |
+| `embody` | Chainable builder with tracer pre-set, throws on error. |
 | `embodify({ code?, config? })` | Immutable chainable builder, returns Result. |
 
 See [DOCS.md](./DOCS.md) for the full API reference and filter options.
